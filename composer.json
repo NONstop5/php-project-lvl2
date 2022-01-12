@@ -1,0 +1,13 @@
+{
+    "name": "hexlet/code",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "NONstop",
+            "email": "non_2002@mail.ru"
+        }
+    ],
+    "description": "hexlet php-project-lvl2",
+    "require": {}
+}
