@@ -1,5 +1,8 @@
 {
     "name": "hexlet/code",
+    "bin": [
+        "bin/gendiff"
+    ],
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -9,5 +12,14 @@
         }
     ],
     "description": "hexlet php-project-lvl2",
-    "require": {}
+    "autoload": {
+        "files": [
+        ]
+    },
+    "require": {
+        "docopt/docopt": "^1.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.6"
+    }
 }
