@@ -9,3 +9,8 @@ dump:
 
 lint:
 	composer exec --verbose phpcs -- --standard=PSR12 --colors src bin
+
+tests:
+	composer exec --verbose phpunit tests
+
+.PHONY: tests
