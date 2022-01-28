@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace Differ\Differ;
 
+use Exception;
+
 function genDiff(string $pathToFile1, string $pathToFile2): string
 {
-    $json1 = json_decode(file_get_contents($pathToFile1), true);
-    $json2 = json_decode(file_get_contents($pathToFile2), true);
-
     $result = [];
+
+    try {
+        [
+            'json1' => $json1,
+            'json2' => $json2,
+        ] = getFilesData($pathToFile1, $pathToFile2);
+    } catch (Exception $e) {
+        return "Incorrect files!\n";
+    }
 
     foreach ($json1 as $key => $value) {
         if (array_key_exists($key, $json2)) {
@@ -50,18 +58,43 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
         ];
     }
 
-    usort($result, function ($item1, $item2) {
-        return $item1['key'] <=> $item2['key'];
-    });
+    usort(
+        $result,
+        function ($item1, $item2) {
+            return $item1['key'] <=> $item2['key'];
+        }
+    );
 
     $openBrace = "{\n";
     $closeBrace = "}\n";
+    $result = array_reduce(
+        $result,
+        function ($acc, $item) {
+            $value = var_export($item['value'], true);
 
-    return $openBrace . array_reduce($result, function ($acc, $item) {
-        $value = var_export($item['value'], true);
+            return $acc . "  {$item['compare']} {$item['key']}: {$value}\n";
+        },
+        ''
+    );
 
-        return $acc . "  {$item['compare']} {$item['key']}: {$value}\n";
-    }, '') . $closeBrace;
+    return "{$openBrace}{$result}{$closeBrace}";
 }
 
-print_r(genDiff('file1.json', 'file2.json'));
+/**
+ * @param string $pathToFile1
+ * @param string $pathToFile2
+ *
+ * @return array
+ * @throws Exception
+ */
+function getFilesData(string $pathToFile1, string $pathToFile2): array
+{
+    if (!file_exists($pathToFile1) || !file_exists($pathToFile2)) {
+        throw new Exception('Files not found!');
+    }
+
+    return [
+        'json1' => json_decode(file_get_contents($pathToFile1), true),
+        'json2' => json_decode(file_get_contents($pathToFile2), true),
+    ];
+}
