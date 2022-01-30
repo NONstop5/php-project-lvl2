@@ -10,10 +10,10 @@ dump:
 lint:
 	composer exec --verbose phpcs -- --standard=PSR12 --colors src bin
 
-tests:
+test:
 	composer exec --verbose phpunit tests
 
-tests-coverage:
+test-coverage:
 	composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
 
 .PHONY: tests
