@@ -6,22 +6,23 @@ namespace Differ\Differ;
 
 use Exception;
 
+use function Differ\Parsers\jsonFileParse;
+use function Differ\Parsers\yamlFileParse;
+
 function genDiff(string $pathToFile1, string $pathToFile2): string
 {
     $result = [];
 
     try {
-        [
-            'json1' => $json1,
-            'json2' => $json2,
-        ] = getFilesData($pathToFile1, $pathToFile2);
+        $fileData1 = getFileData($pathToFile1);
+        $fileData2 = getFileData($pathToFile2);
     } catch (Exception $e) {
         return "Incorrect files!\n";
     }
 
-    foreach ($json1 as $key => $value) {
-        if (array_key_exists($key, $json2)) {
-            if ($json2[$key] === $value) {
+    foreach ($fileData1 as $key => $value) {
+        if (array_key_exists($key, $fileData2)) {
+            if ($fileData2[$key] === $value) {
                 $result[] = [
                     'key' => $key,
                     'value' => $value,
@@ -35,7 +36,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
                 ];
                 $result[] = [
                     'key' => $key,
-                    'value' => $json2[$key],
+                    'value' => $fileData2[$key],
                     'compare' => '+',
                 ];
             }
@@ -48,7 +49,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
         }
     }
 
-    $json2Unique = array_diff_key($json2, $json1);
+    $json2Unique = array_diff_key($fileData2, $fileData1);
 
     foreach ($json2Unique as $key => $value) {
         $result[] = [
@@ -81,20 +82,37 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
 }
 
 /**
- * @param string $pathToFile1
- * @param string $pathToFile2
+ * @param string $filePath
  *
  * @return array
  * @throws Exception
  */
-function getFilesData(string $pathToFile1, string $pathToFile2): array
+function getFileData(string $filePath): array
 {
-    if (!file_exists($pathToFile1) || !file_exists($pathToFile2)) {
-        throw new Exception('Files not found!');
+    if (!file_exists($filePath)) {
+        throw new Exception("File {$filePath} not found!");
     }
 
-    return [
-        'json1' => json_decode(file_get_contents($pathToFile1), true),
-        'json2' => json_decode(file_get_contents($pathToFile2), true),
-    ];
+    $fileFormat = getFileFormat($filePath);
+
+    return $fileFormat === 'json' ? jsonFileParse($filePath) : yamlFileParse($filePath);
+}
+
+/**
+ * @param string $filePath
+ *
+ * @return string
+ * @throws Exception
+ */
+function getFileFormat(string $filePath): string
+{
+    $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+    if ($fileExtension === 'json') {
+        return 'json';
+    } elseif ($fileExtension === 'yml' || $fileExtension === 'yaml') {
+        return 'yaml';
+    } else {
+        throw new Exception('Wrong file format!');
+    }
 }
