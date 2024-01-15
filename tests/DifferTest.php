@@ -19,7 +19,7 @@ class DifferTest extends TestCase
         $this->fixturesPath = __DIR__ . '/fixtures';
     }
 
-    public function testDiffJson()
+    public function testDiffJson(): void
     {
         $pathToFile1 = "{$this->fixturesPath}/file1.json";
         $pathToFile2 = "{$this->fixturesPath}/file2.json";
@@ -30,7 +30,7 @@ class DifferTest extends TestCase
         $this->assertEquals($expectedData, $diff);
     }
 
-    public function testDiffYml()
+    public function testDiffYml(): void
     {
         $pathToFile1 = "{$this->fixturesPath}/file1.yml";
         $pathToFile2 = "{$this->fixturesPath}/file2.yaml";
@@ -41,7 +41,7 @@ class DifferTest extends TestCase
         $this->assertEquals($expectedData, $diff);
     }
 
-    public function testDiffJsonYml()
+    public function testDiffJsonYml(): void
     {
         $pathToFile1 = "{$this->fixturesPath}/file1.json";
         $pathToFile2 = "{$this->fixturesPath}/file2.yaml";
@@ -52,7 +52,7 @@ class DifferTest extends TestCase
         $this->assertEquals($expectedData, $diff);
     }
 
-    public function testDiffYmlJson()
+    public function testDiffYmlJson(): void
     {
         $pathToFile1 = "{$this->fixturesPath}/file1.yml";
         $pathToFile2 = "{$this->fixturesPath}/file2.json";
