@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Differ\Differ;
 
 use Exception;
+use RuntimeException;
 
 use function Differ\Parsers\jsonFileParse;
 use function Differ\Parsers\yamlFileParse;
@@ -61,7 +62,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
 
     usort(
         $result,
-        function ($item1, $item2) {
+        static function ($item1, $item2) {
             return $item1['key'] <=> $item2['key'];
         }
     );
@@ -70,7 +71,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
     $closeBrace = "}\n";
     $result = array_reduce(
         $result,
-        function ($acc, $item) {
+        static function ($acc, $item) {
             $value = var_export($item['value'], true);
 
             return $acc . "  {$item['compare']} {$item['key']}: {$value}\n";
@@ -90,7 +91,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
 function getFileData(string $filePath): array
 {
     if (!file_exists($filePath)) {
-        throw new Exception("File {$filePath} not found!");
+        throw new RuntimeException("File {$filePath} not found!");
     }
 
     $fileFormat = getFileFormat($filePath);
@@ -110,9 +111,11 @@ function getFileFormat(string $filePath): string
 
     if ($fileExtension === 'json') {
         return 'json';
-    } elseif ($fileExtension === 'yml' || $fileExtension === 'yaml') {
-        return 'yaml';
-    } else {
-        throw new Exception('Wrong file format!');
     }
+
+    if ($fileExtension === 'yml' || $fileExtension === 'yaml') {
+        return 'yaml';
+    }
+
+    throw new RuntimeException('Wrong file format!');
 }
