@@ -6,7 +6,7 @@ namespace Differ\Cli;
 
 use Docopt;
 
-function getInput()
+function getInput(): array
 {
     $doc = getDoc();
     $args = Docopt::handle($doc, ['version' => '1.0']);
@@ -22,7 +22,7 @@ function getInput()
     ];
 }
 
-function getDoc()
+function getDoc(): string
 {
     return <<<DOC
 Generate diff
