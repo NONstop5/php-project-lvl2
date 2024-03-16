@@ -18,17 +18,17 @@ jobs:
             # checkout — клонирует репозиторий
             # Check-out repository under GitHub workspace
             # https://github.com/actions/checkout
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v2
                 # Step's name
             - name: Setup PHP
                 # Action gives to setup the PHP environment to test application
                 # https://github.com/shivammathur/setup-php
-              uses: shivammathur/setup-php@v3
+              uses: shivammathur/setup-php@v2
               with:
                   # Specify the PHP version
                   php-version: '7.4'
             # Install project
-            - name: Install
+            - name: Install project
               run: make install
             # Run linter
             - name: Run linter
