@@ -1,7 +1,11 @@
 /vendor/
 .idea
+.DS_Store
+.vscode
 logs
+*.log
 *.swo
 *.swp
 *.cache
 build
+coverage
