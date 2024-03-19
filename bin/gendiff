@@ -1,10 +1,19 @@
 #!/usr/bin/env php
 <?php
 
+$autoloadPath1 = __DIR__ . '/../../../autoload.php';
+$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
+
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1;
+} else {
+    require_once $autoloadPath2;
+}
+
 use function Differ\Cli\getInput;
 use function Differ\Differ\genDiff;
 
-require_once __DIR__ . '/../src/autoload.php';
+// bin/gendiff tests/fixtures/file1.json tests/fixtures/file2.json --format=json
 
 [
     'pathToFile1' => $pathToFile1,
@@ -12,5 +21,6 @@ require_once __DIR__ . '/../src/autoload.php';
     'format' => $format,
 ] = getInput();
 
-$diff = genDiff($pathToFile1, $pathToFile2);
+$diff = genDiff($pathToFile1, $pathToFile2, $format);
+
 print_r($diff);
