@@ -10,56 +10,49 @@ use function Differ\Differ\genDiff;
 
 class DifferTest extends TestCase
 {
-    private string $fixturesPath;
+    private string $json1;
+    private string $json2;
+    private string $yml1;
+    private string $yaml2;
+    private string $expectedData;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->fixturesPath = __DIR__ . '/fixtures';
+        $fixturesPath = __DIR__ . '/fixtures/plain';
+        $this->json1 = "{$fixturesPath}/file1.json";
+        $this->json2 = "{$fixturesPath}/file2.json";
+        $this->yml1 = "{$fixturesPath}/file1.yml";
+        $this->yaml2 = "{$fixturesPath}/file2.yaml";
+        $this->expectedData = file_get_contents("{$fixturesPath}/expected.txt");
     }
 
     public function testDiffJson(): void
     {
-        $pathToFile1 = "{$this->fixturesPath}/file1.json";
-        $pathToFile2 = "{$this->fixturesPath}/file2.json";
-        $expectedData = file_get_contents("{$this->fixturesPath}/expected.txt");
+        $diff = genDiff($this->json1, $this->json2);
 
-        $diff = genDiff($pathToFile1, $pathToFile2);
-
-        $this->assertEquals($expectedData, $diff);
+        $this->assertEquals($this->expectedData, $diff);
     }
 
-    public function testDiffYml(): void
+    public function testDiffYaml(): void
     {
-        $pathToFile1 = "{$this->fixturesPath}/file1.yml";
-        $pathToFile2 = "{$this->fixturesPath}/file2.yaml";
-        $expectedData = file_get_contents("{$this->fixturesPath}/expected.txt");
+        $diff = genDiff($this->yml1, $this->yaml2);
 
-        $diff = genDiff($pathToFile1, $pathToFile2);
-
-        $this->assertEquals($expectedData, $diff);
+        $this->assertEquals($this->expectedData, $diff);
     }
 
-    public function testDiffJsonYml(): void
+    public function testDiffJsonYaml(): void
     {
-        $pathToFile1 = "{$this->fixturesPath}/file1.json";
-        $pathToFile2 = "{$this->fixturesPath}/file2.yaml";
-        $expectedData = file_get_contents("{$this->fixturesPath}/expected.txt");
+        $diff = genDiff($this->json1, $this->yaml2);
 
-        $diff = genDiff($pathToFile1, $pathToFile2);
-
-        $this->assertEquals($expectedData, $diff);
+        $this->assertEquals($this->expectedData, $diff);
     }
 
-    public function testDiffYmlJson(): void
+    public function testDiffYamlJson(): void
     {
-        $pathToFile1 = "{$this->fixturesPath}/file1.yml";
-        $pathToFile2 = "{$this->fixturesPath}/file2.json";
-        $expectedData = file_get_contents("{$this->fixturesPath}/expected.txt");
+        $diff = genDiff($this->yml1, $this->json2);
 
-        $diff = genDiff($pathToFile1, $pathToFile2);
-
-        $this->assertEquals($expectedData, $diff);
+        $this->assertEquals($this->expectedData, $diff);
     }
 }
