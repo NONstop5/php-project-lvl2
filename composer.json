@@ -17,11 +17,24 @@
             "Tests\\": "tests/"
         },
         "files": [
-            "src/Cli.php",
             "src/DataGetter.php",
             "src/Parsers.php",
             "src/Differ.php",
             "src/Formatter.php"
+        ]
+    },
+    "scripts": {
+        "test:coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit tests --color=always --coverage-clover build/logs/clover.xml"
+        ],
+        "test:coverage-text": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit tests --color=always --coverage-text"
+        ],
+        "test:coverage-html": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit tests --color=always --coverage-html=\"build/coverage\""
         ]
     },
     "require": {
