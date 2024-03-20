@@ -11,7 +11,7 @@ lint:
 	composer exec -v phpcs src bin tests
 
 lint-fix:
-	composer exec --verbose phpcbf -- --standard=PSR12 --colors src bin tests
+	composer exec -v phpcbf -- --standard=PSR12 --colors src bin tests
 
 phpstan:
 	vendor/bin/phpstan analyse
