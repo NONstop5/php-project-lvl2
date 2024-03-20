@@ -5,25 +5,50 @@ declare(strict_types=1);
 namespace Differ\Differ;
 
 use Exception;
+use JsonException;
 use RuntimeException;
 
-use function Differ\Parsers\jsonFileParse;
-use function Differ\Parsers\yamlFileParse;
+use function Differ\Parsers\parse;
 
-function genDiff(string $pathToFile1, string $pathToFile2): string
+const FILE_FORMAT_JSON = 'json';
+const FILE_FORMAT_YAML = 'yaml';
+const FILE_EXTENSION_JSON = 'json';
+const FILE_EXTENSIONS_YAML = ['yml', 'yaml'];
+
+/**
+ * @param string $pathToFile1
+ * @param string $pathToFile2
+ * @param string $format
+ *
+ * @return string
+ * @throws JsonException
+ */
+function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'stylish'): string
+{
+    [
+        'fileDataType' => $file1DataType,
+        'fileRawData' => $file1RawData,
+    ] = getFileData($pathToFile1);
+    [
+        'fileDataType' => $file2DataType,
+        'fileRawData' => $file2RawData,
+    ] = getFileData($pathToFile2);
+
+    $fileData1 = parse($file1DataType, $file1RawData);
+    $fileData2 = parse($file2DataType, $file2RawData);
+
+    $dataDiff = getDataDiff($fileData1, $fileData2);
+
+    return format($format, $dataDiff);
+}
+
+function getDataDiff(array $data1, array $data2): array
 {
     $result = [];
 
-    try {
-        $fileData1 = getFileData($pathToFile1);
-        $fileData2 = getFileData($pathToFile2);
-    } catch (Exception $e) {
-        return "Incorrect files!\n";
-    }
-
-    foreach ($fileData1 as $key => $value) {
-        if (array_key_exists($key, $fileData2)) {
-            if ($fileData2[$key] === $value) {
+    foreach ($data1 as $key => $value) {
+        if (array_key_exists($key, $data2)) {
+            if ($data2[$key] === $value) {
                 $result[] = [
                     'key' => $key,
                     'value' => $value,
@@ -37,7 +62,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
                 ];
                 $result[] = [
                     'key' => $key,
-                    'value' => $fileData2[$key],
+                    'value' => $data2[$key],
                     'compare' => '+',
                 ];
             }
@@ -50,7 +75,7 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
         }
     }
 
-    $json2Unique = array_diff_key($fileData2, $fileData1);
+    $json2Unique = array_diff_key($data2, $data1);
 
     foreach ($json2Unique as $key => $value) {
         $result[] = [
@@ -67,10 +92,43 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
         }
     );
 
+    return $result;
+}
+
+function getFileData(string $filePath): array
+{
+    if (!file_exists($filePath)) {
+        throw new RuntimeException(sprintf('File on path "%s" not found!', $filePath));
+    }
+
+    return [
+        'fileDataType' => getFileFormat($filePath),
+        'fileRawData' => file_get_contents($filePath),
+    ];
+}
+
+function getFileFormat(string $filePath): string
+{
+    $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+    if ($fileExtension === FILE_EXTENSION_JSON) {
+        return FILE_FORMAT_JSON;
+    }
+
+    if (in_array($fileExtension, FILE_EXTENSIONS_YAML, true)) {
+        return FILE_FORMAT_YAML;
+    }
+
+    throw new RuntimeException('Wrong file format!');
+}
+
+function format(string $format, array $data): string
+{
     $openBrace = "{\n";
     $closeBrace = "}\n";
+
     $result = array_reduce(
-        $result,
+        $data,
         static function ($acc, $item) {
             $value = var_export($item['value'], true);
 
@@ -80,42 +138,4 @@ function genDiff(string $pathToFile1, string $pathToFile2): string
     );
 
     return "{$openBrace}{$result}{$closeBrace}";
-}
-
-/**
- * @param string $filePath
- *
- * @return array
- * @throws Exception
- */
-function getFileData(string $filePath): array
-{
-    if (!file_exists($filePath)) {
-        throw new RuntimeException("File {$filePath} not found!");
-    }
-
-    $fileFormat = getFileFormat($filePath);
-
-    return $fileFormat === 'json' ? jsonFileParse($filePath) : yamlFileParse($filePath);
-}
-
-/**
- * @param string $filePath
- *
- * @return string
- * @throws Exception
- */
-function getFileFormat(string $filePath): string
-{
-    $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
-
-    if ($fileExtension === 'json') {
-        return 'json';
-    }
-
-    if ($fileExtension === 'yml' || $fileExtension === 'yaml') {
-        return 'yaml';
-    }
-
-    throw new RuntimeException('Wrong file format!');
 }
