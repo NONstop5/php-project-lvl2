@@ -20,7 +20,13 @@ test:
 	composer exec --verbose phpunit tests
 
 test-coverage:
-	composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
+	composer test:coverage
+
+test-coverage-text:
+	composer test:coverage-text
+
+test-coverage-html:
+	composer test:coverage-html
 
 cmp-plain-json-json:
 	./bin/gendiff tests/fixtures/plain/file1.json tests/fixtures/plain/file2.json
