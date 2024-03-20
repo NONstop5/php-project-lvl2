@@ -8,36 +8,38 @@ use JsonException;
 use RuntimeException;
 use Symfony\Component\Yaml\Yaml;
 
-use const Differ\Differ\FILE_FORMAT_JSON;
-use const Differ\Differ\FILE_FORMAT_YAML;
+const FORMAT_JSON = 'json';
+const FORMAT_YML = 'yml';
+const FORMAT_YAML = 'yaml';
 
 /**
- * @param string $dataType
+ * @param string $dataFormat
  * @param string $data
  *
  * @return array
  * @throws JsonException
  */
-function parse(string $dataType, string $data): array
+function parse(string $dataFormat, string $data): array
 {
-    switch ($dataType) {
-        case FILE_FORMAT_JSON:
+    switch ($dataFormat) {
+        case FORMAT_JSON:
             return jsonFileParse($data);
-        case FILE_FORMAT_YAML:
+        case FORMAT_YML:
+        case FORMAT_YAML:
             return yamlFileParse($data);
         default:
-            throw new RuntimeException('Unknown file format!');
+            throw new RuntimeException(sprintf('Unknown data format: %s!', $dataFormat));
     }
 }
 
 /**
- * @param string $yamlFilePath
+ * @param string $data
  *
  * @return array
  */
-function yamlFileParse(string $yamlFilePath): array
+function yamlFileParse(string $data): array
 {
-    return Yaml::parse($yamlFilePath);
+    return Yaml::parse($data);
 }
 
 /**
