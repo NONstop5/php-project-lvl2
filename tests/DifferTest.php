@@ -25,6 +25,7 @@ class DifferTest extends TestCase
         $this->json2 = "{$fixturesPath}/file2.json";
         $this->yml1 = "{$fixturesPath}/file1.yml";
         $this->yaml2 = "{$fixturesPath}/file2.yaml";
+        /** @phpstan-ignore-next-line */
         $this->expectedData = file_get_contents("{$fixturesPath}/expected.txt");
     }
 
