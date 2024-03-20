@@ -31,4 +31,7 @@ cmp-plain-json-yaml:
 cmp-plain-yml-json:
 	./bin/gendiff tests/fixtures/plain/file1.yml tests/fixtures/plain/file2.json
 
+cmp-plain-yaml-yml:
+	./bin/gendiff tests/fixtures/plain/file2.yaml tests/fixtures/plain/file1.yml
+
 .PHONY: tests
