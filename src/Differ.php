@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace Differ\Differ;
 
 use JsonException;
-use RuntimeException;
 
+use function Differ\DataGetter\getFileData;
+use function Differ\Formatter\format;
 use function Differ\Parsers\parse;
-
-const FILE_FORMAT_JSON = 'json';
-const FILE_FORMAT_YAML = 'yaml';
-const FILE_EXTENSION_JSON = 'json';
-const FILE_EXTENSIONS_YAML = ['yml', 'yaml'];
 
 /**
  * @param string $pathToFile1
@@ -22,19 +18,22 @@ const FILE_EXTENSIONS_YAML = ['yml', 'yaml'];
  * @return string
  * @throws JsonException
  */
-function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'stylish'): string
-{
+function genDiff(
+    string $pathToFile1,
+    string $pathToFile2,
+    string $format = 'stylish'
+): string {
     [
-        'fileDataType' => $file1DataType,
-        'fileRawData' => $file1RawData,
+        'dataFormat' => $dataFormat1,
+        'rawData' => $rawData1,
     ] = getFileData($pathToFile1);
     [
-        'fileDataType' => $file2DataType,
-        'fileRawData' => $file2RawData,
+        'dataFormat' => $dataFormat2,
+        'rawData' => $rawData2,
     ] = getFileData($pathToFile2);
 
-    $fileData1 = parse($file1DataType, $file1RawData);
-    $fileData2 = parse($file2DataType, $file2RawData);
+    $fileData1 = parse($dataFormat1, $rawData1);
+    $fileData2 = parse($dataFormat2, $rawData2);
 
     $dataDiff = getDataDiff($fileData1, $fileData2);
 
@@ -92,49 +91,4 @@ function getDataDiff(array $data1, array $data2): array
     );
 
     return $result;
-}
-
-function getFileData(string $filePath): array
-{
-    if (!file_exists($filePath)) {
-        throw new RuntimeException(sprintf('File on path "%s" not found!', $filePath));
-    }
-
-    return [
-        'fileDataType' => getFileFormat($filePath),
-        'fileRawData' => file_get_contents($filePath),
-    ];
-}
-
-function getFileFormat(string $filePath): string
-{
-    $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
-
-    if ($fileExtension === FILE_EXTENSION_JSON) {
-        return FILE_FORMAT_JSON;
-    }
-
-    if (in_array($fileExtension, FILE_EXTENSIONS_YAML, true)) {
-        return FILE_FORMAT_YAML;
-    }
-
-    throw new RuntimeException('Wrong file format!');
-}
-
-function format(string $format, array $data): string
-{
-    $openBrace = "{\n";
-    $closeBrace = "}\n";
-
-    $result = array_reduce(
-        $data,
-        static function ($acc, $item) {
-            $value = var_export($item['value'], true);
-
-            return $acc . "  {$item['compare']} {$item['key']}: {$value}\n";
-        },
-        ''
-    );
-
-    return "{$openBrace}{$result}{$closeBrace}";
 }
