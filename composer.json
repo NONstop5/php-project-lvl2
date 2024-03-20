@@ -18,8 +18,10 @@
         },
         "files": [
             "src/Cli.php",
+            "src/DataGetter.php",
+            "src/Parsers.php",
             "src/Differ.php",
-            "src/Parsers.php"
+            "src/Formatter.php"
         ]
     },
     "require": {
