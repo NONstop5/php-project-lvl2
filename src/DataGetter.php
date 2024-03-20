@@ -32,5 +32,5 @@ function getFileFormat(string $filePath): string
         return $fileExtension;
     }
 
-    throw new RuntimeException('Only Json and Yaml files supported!');
+    throw new RuntimeException('Only Json and Yaml files are supported!');
 }
