@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Differ\Differ;
 
-use Exception;
 use JsonException;
 use RuntimeException;
 
