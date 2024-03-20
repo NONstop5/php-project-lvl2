@@ -10,17 +10,28 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
-use function Differ\Cli\getInput;
 use function Differ\Differ\genDiff;
 
-// bin/gendiff tests/fixtures/file1.json tests/fixtures/file2.json --format=json
+function getDoc(): string
+{
+    return <<<DOC
+Generate diff
 
-[
-    'pathToFile1' => $pathToFile1,
-    'pathToFile2' => $pathToFile2,
-    'format' => $format,
-] = getInput();
+Usage:
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
 
-$diff = genDiff($pathToFile1, $pathToFile2, $format);
+Options:
+  -h --help                     Show this screen.
+  -v --version                  Show version.
+  --format <fmt>                Report format [default: stylish]
+DOC;
+}
+
+$doc = getDoc();
+$args = Docopt::handle($doc, ['version' => '1.0']);
+
+$diff = genDiff($args['<firstFile>'], $args['<secondFile>'], $args['--format']);
 
 print_r($diff);
