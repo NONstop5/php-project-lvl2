@@ -34,7 +34,7 @@
         ],
         "test:coverage-html": [
             "@putenv XDEBUG_MODE=coverage",
-            "phpunit tests --color=always --coverage-html=\"build/coverage\""
+            "phpunit tests --color=always --coverage-html build/coverage"
         ]
     },
     "require": {
