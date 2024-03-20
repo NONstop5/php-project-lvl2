@@ -7,7 +7,7 @@ namespace Differ\Differ;
 use JsonException;
 
 use function Differ\DataGetter\getFileData;
-use function Differ\Formatter\format;
+use function Differ\Formatters\format;
 use function Differ\Parsers\parse;
 
 /**

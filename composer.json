@@ -20,7 +20,7 @@
             "src/DataGetter.php",
             "src/Parsers.php",
             "src/Differ.php",
-            "src/Formatter.php"
+            "src/Formatters.php"
         ]
     },
     "scripts": {
