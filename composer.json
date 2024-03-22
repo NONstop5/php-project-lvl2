@@ -13,9 +13,6 @@
     ],
     "description": "hexlet php-project-lvl2",
     "autoload": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        },
         "files": [
             "src/DataGetter.php",
             "src/Parsers.php",
