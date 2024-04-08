@@ -40,4 +40,16 @@ cmp-plain-yml-json:
 cmp-plain-yaml-yml:
 	./bin/gendiff tests/fixtures/plain/file2.yaml tests/fixtures/plain/file1.yml
 
+cmp-nested-json-json:
+	./bin/gendiff tests/fixtures/nested/file1.json tests/fixtures/plain/file2.json
+
+cmp-nested-json-yaml:
+	./bin/gendiff tests/fixtures/nested/file1.json tests/fixtures/plain/file2.yaml
+
+cmp-nested-yml-json:
+	./bin/gendiff tests/fixtures/nested/file1.yml tests/fixtures/plain/file2.json
+
+cmp-nested-yaml-yml:
+	./bin/gendiff tests/fixtures/nested/file2.yaml tests/fixtures/plain/file1.yml
+
 .PHONY: tests
