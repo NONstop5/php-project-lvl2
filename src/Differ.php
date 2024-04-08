@@ -7,8 +7,8 @@ namespace Differ\Differ;
 use JsonException;
 
 use function Differ\DataGetter\getFileData;
-use function Differ\Formatters\format;
-use function Differ\Parsers\parse;
+use function Differ\Formatter\format;
+use function Differ\Parser\parse;
 
 /**
  * @param string $pathToFile1
