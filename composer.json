@@ -15,9 +15,10 @@
     "autoload": {
         "files": [
             "src/DataGetter.php",
-            "src/Parsers.php",
+            "src/Parser.php",
             "src/Differ.php",
-            "src/Formatters.php"
+            "src/Formatter.php",
+            "src/Formatters/Stylish.php"
         ]
     },
     "scripts": {
