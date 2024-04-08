@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use JsonException;
 use PHPUnit\Framework\TestCase;
 
 use function Differ\Differ\genDiff;
@@ -25,35 +26,46 @@ class DifferTest extends TestCase
         $this->json2 = "{$fixturesPath}/file2.json";
         $this->yml1 = "{$fixturesPath}/file1.yml";
         $this->yaml2 = "{$fixturesPath}/file2.yaml";
-        /** @phpstan-ignore-next-line */
-        $this->expectedData = file_get_contents("{$fixturesPath}/expected.txt");
+        $this->expectedData = "{$fixturesPath}/expected.txt";
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testDiffJson(): void
     {
         $diff = genDiff($this->json1, $this->json2);
 
-        $this->assertEquals($this->expectedData, $diff);
+        $this->assertStringEqualsFile($this->expectedData, $diff);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testDiffYaml(): void
     {
         $diff = genDiff($this->yml1, $this->yaml2);
 
-        $this->assertEquals($this->expectedData, $diff);
+        $this->assertStringEqualsFile($this->expectedData, $diff);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testDiffJsonYaml(): void
     {
         $diff = genDiff($this->json1, $this->yaml2);
 
-        $this->assertEquals($this->expectedData, $diff);
+        $this->assertStringEqualsFile($this->expectedData, $diff);
     }
 
+    /**
+     * @throws JsonException
+     */
     public function testDiffYamlJson(): void
     {
         $diff = genDiff($this->yml1, $this->json2);
 
-        $this->assertEquals($this->expectedData, $diff);
+        $this->assertStringEqualsFile($this->expectedData, $diff);
     }
 }
