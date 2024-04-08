@@ -1,13 +1,8 @@
 parameters:
-  level: 8
-  paths:
-    - src
-    - tests
-
-  checkMissingIterableValueType: false
-
-  excludePaths:
-    - code/vendor
-
-  reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    level: 8
+    paths:
+        - src
+        - tests
 
