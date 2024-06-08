@@ -44,12 +44,12 @@ cmp-nested-json-json:
 	./bin/gendiff tests/fixtures/nested/file1.json tests/fixtures/nested/file2.json
 
 cmp-nested-json-yaml:
-	./bin/gendiff tests/fixtures/nested/file1.json tests/fixtures/nested/file2.yaml
+	./bin/gendiff tests/fixtures/nested/file1.json tests/fixtures/nested/file2.yml
 
 cmp-nested-yml-json:
-	./bin/gendiff tests/fixtures/nested/file1.yml tests/fixtures/nested/file2.json
+	./bin/gendiff tests/fixtures/nested/file1.yaml tests/fixtures/nested/file2.json
 
 cmp-nested-yaml-yml:
-	./bin/gendiff tests/fixtures/nested/file2.yaml tests/fixtures/nested/file1.yml
+	./bin/gendiff tests/fixtures/nested/file2.yml tests/fixtures/nested/file1.yaml
 
 .PHONY: tests
