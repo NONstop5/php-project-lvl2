@@ -21,15 +21,11 @@ const FORMAT_YAML = 'yaml';
  */
 function parse(string $dataFormat, string $data): array
 {
-    switch ($dataFormat) {
-        case FORMAT_JSON:
-            return jsonFileParse($data);
-        case FORMAT_YML:
-        case FORMAT_YAML:
-            return yamlFileParse($data);
-        default:
-            throw new RuntimeException(sprintf('Unknown data format: %s!', $dataFormat));
-    }
+    return match ($dataFormat) {
+        FORMAT_JSON => jsonFileParse($data),
+        FORMAT_YML, FORMAT_YAML => yamlFileParse($data),
+        default => throw new RuntimeException(sprintf('Unknown data format: %s!', $dataFormat)),
+    };
 }
 
 /**
