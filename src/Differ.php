@@ -15,6 +15,7 @@ const UNCHANGED = 'unchanged';
 const CHANGED = 'changed';
 const ADDED = 'added';
 const DELETED = 'deleted';
+const NESTED = 'nested';
 
 /**
  * @param string $pathToFile1
@@ -48,78 +49,77 @@ function genDiff(
 
 function buildDiffData(array $data1, array $data2): array
 {
-    return [
-        'type' => 'root',
-        'children' => buildDiffIter($data1, $data2),
-    ];
+    return buildDiffIter($data1, $data2);
 }
 
 function buildDiffIter(array $data1, array $data2): array
 {
-    $result = array_map(
-        static function ($key, $value) use ($data2) {
-            if (array_key_exists($key, $data2)) {
-                //if (is_array($data2[$key])) {
-                //
-                //}
-                if ($data2[$key] === $value) {
-                    return [
-                        'key' => $key,
-                        'value' => $value,
-                        'compare' => UNCHANGED,
-                    ];
-                } else {
-                    return [
-                        [
-                        'key' => $key,
-                        'value' => $value,
-                        'compare' => DELETED,
-                        ],
-                        [
-                            'key' => $key,
-                            'value' => $data2[$key],
-                            'compare' => ADDED,
-                        ]
-                    ];
-                }
-            } else {
-                return [
-                    'key' => $key,
-                    'value' => $value,
-                    'compare' => DELETED,
-                ];
-            }
-        },
+    $result1 = array_reduce(
         array_keys($data1),
-        $data1
+        static function ($acc, $key) use ($data1, $data2) {
+            $value1 = $data1[$key];
+
+            if (array_key_exists($key, $data2)) {
+                $value2 = $data2[$key];
+
+                if (is_array($value1) && is_array($value2)) {
+                    $acc[] = [
+                        'compare' => NESTED,
+                        'key' => $key,
+                        'value' => buildDiffIter($value1, $value2),
+                    ];
+
+                    return $acc;
+                }
+
+                if ($value1 === $value2) {
+                    $acc[] = [
+                        'compare' => UNCHANGED,
+                        'key' => $key,
+                        'value' => $value1,
+                    ];
+
+                    return $acc;
+                }
+
+                $acc[] = [
+                    'compare' => CHANGED,
+                    'key' => $key,
+                    'value1' => $value1,
+                    'value2' => $value2,
+                ];
+
+                return $acc;
+            }
+
+            $acc[] = [
+                'compare' => DELETED,
+                'key' => $key,
+                'value' => $value1,
+            ];
+
+            return $acc;
+        },
+        []
     );
 
-    //return $result;
     $json2Unique = array_diff_key($data2, $data1);
 
-    $result = array_map(
+    $result2 = array_map(
         static function ($key, $value) {
             return [
+                'compare' => ADDED,
                 'key' => $key,
                 'value' => $value,
-                'compare' => DELETED,
             ];
         },
         array_keys($json2Unique),
         $json2Unique
     );
 
-    $sortedResult = sort($result, static function ($item1, $item2) {
+    $result = [...$result1, ...$result2];
+
+    return sort($result, static function ($item1, $item2) {
         return $item1['key'] <=> $item2['key'];
     });
-
-    //usort(
-    //    $result,
-    //    static function ($item1, $item2) {
-    //        return $item1['key'] <=> $item2['key'];
-    //    }
-    //);
-
-    return $sortedResult;
-
 }
