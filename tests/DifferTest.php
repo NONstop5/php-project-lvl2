@@ -37,7 +37,7 @@ class DifferTest extends TestCase
         string $firstFileType,
         string $secondFileType
     ): void {
-        $diff = genDiff($this->getFirstFilePath($firstFileType), $this->getSecondFilePath($secondFileType));
+        $diff = genDiff($this->getFirstFilePath($firstFileType), $this->getSecondFilePath($secondFileType), $formatter);
 
         $this->assertStringEqualsFile($this->getExpectedPath($formatter), $diff);
     }
@@ -57,6 +57,16 @@ class DifferTest extends TestCase
             ],
             'plain format, yaml - yml' => [
                 'stylish',
+                'yaml',
+                'yml',
+            ],
+            'json format, json - json' => [
+                'json',
+                'json',
+                'json',
+            ],
+            'json format, yaml - yml' => [
+                'json',
                 'yaml',
                 'yml',
             ],
