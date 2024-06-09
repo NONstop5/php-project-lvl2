@@ -20,7 +20,7 @@ const COMPARE_TEXT_MAP = [
 
 function format(array $data): string
 {
-    return iter($data) . PHP_EOL;
+    return iter($data);
 }
 
 function iter(mixed $value, array $acc = []): string
