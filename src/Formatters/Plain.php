@@ -38,8 +38,7 @@ function iter(mixed $value, array $acc = []): string
             $key = $val['key'];
             $compare = $val['compare'];
             $compareText = getCompareText($compare);
-            $accNew = $acc;
-            $accNew[] = $key;
+            $accNew = [...$acc, ...$key];
 
             return match ($compare) {
                 ADDED => sprintf(
