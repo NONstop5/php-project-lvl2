@@ -38,28 +38,29 @@ function iter(mixed $value, array $acc = []): string
             $key = $val['key'];
             $compare = $val['compare'];
             $compareText = getCompareText($compare);
-            $acc[] = $key;
+            $accNew = $acc;
+            $accNew[] = $key;
 
             return match ($compare) {
                 ADDED => sprintf(
                     "Property '%s' was %s with value: %s\n",
-                    implode('.', $acc),
+                    implode('.', $accNew),
                     $compareText,
-                    iter($val['value'], $acc),
+                    iter($val['value'], $accNew),
                 ),
                 DELETED => sprintf(
                     "Property '%s' was %s\n",
-                    implode('.', $acc),
+                    implode('.', $accNew),
                     $compareText,
                 ),
                 CHANGED => sprintf(
                     "Property '%s' was %s. From %s to %s\n",
-                    implode('.', $acc),
+                    implode('.', $accNew),
                     $compareText,
-                    iter($val['value1'], $acc),
-                    iter($val['value2'], $acc),
+                    iter($val['value1'], $accNew),
+                    iter($val['value2'], $accNew),
                 ),
-                NESTED => iter($val['value'], $acc),
+                NESTED => iter($val['value'], $accNew),
                 default => null,
             };
         },
