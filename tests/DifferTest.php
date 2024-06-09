@@ -11,61 +11,55 @@ use function Differ\Differ\genDiff;
 
 class DifferTest extends TestCase
 {
-    private string $json1;
-    private string $json2;
-    private string $yml1;
-    private string $yaml2;
-    private string $expectedData;
+    private string $fixturesPath = __DIR__ . '/fixtures/nested';
 
-    protected function setUp(): void
+    private function getExpectedPath(string $formatter): string
     {
-        parent::setUp();
+        return "{$this->fixturesPath}/{$formatter}-expected.txt";
+    }
 
-        $fixturesPath = __DIR__ . '/fixtures/nested';
-        $this->json1 = "{$fixturesPath}/file1.json";
-        $this->json2 = "{$fixturesPath}/file2.json";
-        $this->yml1 = "{$fixturesPath}/file1.yaml";
-        $this->yaml2 = "{$fixturesPath}/file2.yml";
-        $this->expectedData = "{$fixturesPath}/expected.txt";
+    private function getFirstFilePath(string $fileType): string
+    {
+        return "{$this->fixturesPath}/file1.{$fileType}";
+    }
+
+    private function getSecondFilePath(string $fileType): string
+    {
+        return "{$this->fixturesPath}/file2.{$fileType}";
     }
 
     /**
+     * @dataProvider dataProvider
      * @throws JsonException
      */
-    public function testDiffJson(): void
-    {
-        $diff = genDiff($this->json1, $this->json2);
+    public function testDiff(
+        string $formatter,
+        string $firstFileType,
+        string $secondFileType
+    ): void {
+        $diff = genDiff($this->getFirstFilePath($firstFileType), $this->getSecondFilePath($secondFileType));
 
-        $this->assertStringEqualsFile($this->expectedData, $diff);
+        $this->assertStringEqualsFile($this->getExpectedPath($formatter), $diff);
     }
 
-    /**
-     * @throws JsonException
-     */
-    public function atestDiffYaml(): void
+    public function dataProvider(): array
     {
-        $diff = genDiff($this->yml1, $this->yaml2);
-
-        $this->assertStringEqualsFile($this->expectedData, $diff);
-    }
-
-    /**
-     * @throws JsonException
-     */
-    public function atestDiffJsonYaml(): void
-    {
-        $diff = genDiff($this->json1, $this->yaml2);
-
-        $this->assertStringEqualsFile($this->expectedData, $diff);
-    }
-
-    /**
-     * @throws JsonException
-     */
-    public function atestDiffYamlJson(): void
-    {
-        $diff = genDiff($this->yml1, $this->json2);
-
-        $this->assertStringEqualsFile($this->expectedData, $diff);
+        return [
+            'stylish format, json - json' => [
+                'stylish',
+                'json',
+                'json',
+            ],
+            'stylish format, yaml - json' => [
+                'stylish',
+                'yaml',
+                'json',
+            ],
+            'plain format, yaml - yml' => [
+                'stylish',
+                'yaml',
+                'yml',
+            ],
+        ];
     }
 }
