@@ -11,3 +11,5 @@
 > <a href="https://asciinema.org/a/SCUkOAZFdnw0wOMj00QjP6hC5">Json and Yaml plain/nested diff in **stylish format** Demo</a>
 
 > <a href="https://asciinema.org/a/2KBsyQsfepJjin1qQ9ikQGU9Y">Json and Yaml nested in **plain format** diff Demo</a>
+
+> <a href="https://asciinema.org/a/qB2G9FE0DD18gE7mELUcFimJY">Json and Yaml nested in **json format** diff Demo</a>
