@@ -51,12 +51,6 @@ function iter(mixed $value, int $depth = 1): string
             $compare = $val['compare'];
 
             if ($compare === CHANGED) {
-                //$iterValue1 = iter($val['value1'], $depth + 1);
-                //$iterValue1 = $iterValue1 === ''
-                //    ? ' '
-                //    : ' ' . $iterValue1
-                //;
-
                 $value1 = sprintf(
                     "%s%s %s: %s\n",
                     $indentValue,
@@ -64,12 +58,6 @@ function iter(mixed $value, int $depth = 1): string
                     $key,
                     iter($val['value1'], $depth + 1)
                 );
-
-                //$iterValue2 = iter($val['value2'], $depth + 1);
-                //$iterValue2 = $iterValue2 === ''
-                //    ? ' '
-                //    : ' ' . $iterValue2
-                //;
 
                 $value2 = sprintf(
                     "%s%s %s: %s\n",
@@ -83,11 +71,6 @@ function iter(mixed $value, int $depth = 1): string
             }
 
             $compareSymbol = getCompareSymbol($compare);
-            //$value = iter($val['value'], $depth + 1);
-            //$value = $value === ''
-            //    ? ' '
-            //    : ' ' . $value
-            //;
 
             return sprintf(
                 "%s%s %s: %s\n",
