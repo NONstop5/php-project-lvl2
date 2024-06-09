@@ -34,11 +34,11 @@ function iter(mixed $value, array $acc = []): string
     }
 
     $result = array_map(
-        static function ($val) use ($acc) {
+        static function (mixed $val) use ($acc) {
             $key = $val['key'];
             $compare = $val['compare'];
             $compareText = getCompareText($compare);
-            $accNew = [...$acc, ...$key];
+            $accNew = [...$acc, ...[$key]];
 
             return match ($compare) {
                 ADDED => sprintf(
