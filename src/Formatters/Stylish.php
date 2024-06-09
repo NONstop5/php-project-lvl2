@@ -58,7 +58,7 @@ function iter(mixed $value, int $depth = 1): string
                 //;
 
                 $value1 = sprintf(
-                    "%s%s %s:%s\n",
+                    "%s%s %s: %s\n",
                     $indentValue,
                     getCompareSymbol(DELETED),
                     $key,
@@ -72,7 +72,7 @@ function iter(mixed $value, int $depth = 1): string
                 //;
 
                 $value2 = sprintf(
-                    "%s%s %s:%s\n",
+                    "%s%s %s: %s\n",
                     $indentValue,
                     getCompareSymbol(ADDED),
                     $key,
@@ -90,7 +90,7 @@ function iter(mixed $value, int $depth = 1): string
             //;
 
             return sprintf(
-                "%s%s %s:%s\n",
+                "%s%s %s: %s\n",
                 $indentValue,
                 $compareSymbol,
                 $key,
