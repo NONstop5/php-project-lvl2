@@ -8,4 +8,6 @@
 >
 > <a href="https://asciinema.org/a/ql778qebUxWyT480tsQ8a8RYU">Yaml plain diff Demo</a>
 
-> <a href="https://asciinema.org/a/SCUkOAZFdnw0wOMj00QjP6hC5">Json and Yaml plain/nested diff Demo</a>
+> <a href="https://asciinema.org/a/SCUkOAZFdnw0wOMj00QjP6hC5">Json and Yaml plain/nested diff in **stylish format** Demo</a>
+
+> <a href="https://asciinema.org/a/2KBsyQsfepJjin1qQ9ikQGU9Y">Json and Yaml nested in **plain format** diff Demo</a>
