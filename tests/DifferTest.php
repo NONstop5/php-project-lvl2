@@ -56,7 +56,7 @@ class DifferTest extends TestCase
                 'json',
             ],
             'plain format, yaml - yml' => [
-                'stylish',
+                'plain',
                 'yaml',
                 'yml',
             ],
