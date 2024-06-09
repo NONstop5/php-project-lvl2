@@ -6,11 +6,18 @@
 
 ## Library "Differ"
 
-### Clone repository
->`git clone git@github.com:NONstop5/php-project-lvl2.git`
+### Requirements
+- PHP >= 8.2
+- Composer >= 2
+- make >= 4
 
 ### Installation
->`make install`
+> `git clone git@github.com:NONstop5/php-project-lvl2.git`
+> 
+> `make install`
+
+### Help
+>`gendiff -h`
 
 ### Description
 
@@ -23,9 +30,9 @@ use function Differ\Differ\genDiff;
 
 genDiff(string $firstFilePath, string $secondFilePath, string $format = 'stylish'): string
 ```
-> - $firstFilePath - path to json or yaml file
-> - $secondFilePath - path to json or yaml file
-> - $format - output format type, can be `stylish`, `plain`, `json` (default: `stylish`)
+> - `$firstFilePath` - path to json or yaml file
+> - `$secondFilePath` - path to json or yaml file
+> - `$format` - output format type, can be `stylish`, `plain`, `json` (default: `stylish`)
 
 > <a href="https://asciinema.org/a/XR3E5U9ycfXG757OVNxF7p7Bx">Json plain diff Demo</a>
 >
