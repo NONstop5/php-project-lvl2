@@ -8,7 +8,7 @@ indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 
-[*.md]
+[{*.md, *.txt}]
 trim_trailing_whitespace = false
 
 [Makefile]
