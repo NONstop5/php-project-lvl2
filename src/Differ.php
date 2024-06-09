@@ -54,53 +54,43 @@ function buildDiffData(array $data1, array $data2): array
 
 function buildDiffIter(array $data1, array $data2): array
 {
-    $result1 = array_reduce(
-        array_keys($data1),
-        static function ($acc, $key) use ($data1, $data2) {
-            $value1 = $data1[$key];
-
-            if (array_key_exists($key, $data2)) {
-                $value2 = $data2[$key];
+    $result1 = array_map(
+        static function (string $key1, mixed $value1) use ($data2) {
+            if (array_key_exists($key1, $data2)) {
+                $value2 = $data2[$key1];
 
                 if (is_array($value1) && is_array($value2)) {
-                    $acc[] = [
+                    return [
                         'compare' => NESTED,
-                        'key' => $key,
+                        'key' => $key1,
                         'value' => buildDiffIter($value1, $value2),
                     ];
-
-                    return $acc;
                 }
 
                 if ($value1 === $value2) {
-                    $acc[] = [
+                    return [
                         'compare' => UNCHANGED,
-                        'key' => $key,
+                        'key' => $key1,
                         'value' => $value1,
                     ];
-
-                    return $acc;
                 }
 
-                $acc[] = [
+                return [
                     'compare' => CHANGED,
-                    'key' => $key,
+                    'key' => $key1,
                     'value1' => $value1,
                     'value2' => $value2,
                 ];
-
-                return $acc;
             }
 
-            $acc[] = [
+            return [
                 'compare' => DELETED,
-                'key' => $key,
+                'key' => $key1,
                 'value' => $value1,
             ];
-
-            return $acc;
         },
-        []
+        array_keys($data1),
+        $data1
     );
 
     $json2Unique = array_diff_key($data2, $data1);
