@@ -10,7 +10,6 @@ use const Differ\Differ\UNCHANGED;
 use const Differ\Differ\CHANGED;
 use const Differ\Differ\NESTED;
 
-const DEPTH_START = 1;
 const INDENT_SYMBOL = ' ';
 const INDENT_COUNT = 4;
 const COMPARE_SYMBOL_LENGTH = 2;
@@ -24,10 +23,10 @@ const COMPARE_TEXT_SYMBOL_MAP = [
 
 function format(array $data): string
 {
-    return iter($data, DEPTH_START) . PHP_EOL;
+    return iter($data) . PHP_EOL;
 }
 
-function iter(mixed $value, int $depth): string
+function iter(mixed $value, int $depth = 1): string
 {
     if (!is_array($value)) {
         return stringify($value, $depth);
