@@ -11,7 +11,7 @@ use function Differ\Differ\genDiff;
 
 class DifferTest extends TestCase
 {
-    private string $fixturesPath = __DIR__ . '/fixtures/nested';
+    private string $fixturesPath = __DIR__ . '/fixtures';
 
     private function getExpectedPath(string $formatter): string
     {
