@@ -18,7 +18,7 @@ jobs:
             # checkout — клонирует репозиторий
             # Check-out repository under GitHub workspace
             # https://github.com/actions/checkout
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
                 # Step's name
             - name: Setup PHP
                 # Action gives to setup the PHP environment to test application
@@ -33,9 +33,6 @@ jobs:
             # Run linter
             - name: Run linter
               run: make lint
-            # Run tests
-            - name: Run tests
-              run: make test
             # Publish code coverage on Code Climate
             # https://github.com/paambaati/codeclimate-action
             - name: Run test & publish code coverage
