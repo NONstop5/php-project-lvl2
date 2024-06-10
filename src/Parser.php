@@ -36,7 +36,6 @@ function parse(string $dataFormat, string $data): array
 function yamlFileParse(string $data): array
 {
     return Yaml::parse($data);
-    //return Yaml::parse($data, Yaml::PARSE_OBJECT_FOR_MAP);
 }
 
 /**
