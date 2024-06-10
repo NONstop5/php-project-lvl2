@@ -28,22 +28,4 @@ test-coverage-text:
 test-coverage-html:
 	composer test:coverage-html
 
-cmp-stylish-json-json:
-	./bin/gendiff tests/fixtures/file1.json tests/fixtures/file2.json
-
-cmp-stylish-json-yaml:
-	./bin/gendiff tests/fixtures/file1.json tests/fixtures/file2.yml
-
-cmp-plain-json-json:
-	./bin/gendiff tests/fixtures/file1.json tests/fixtures/file2.json --format=plain
-
-cmp-plain-yml-yaml:
-	./bin/gendiff tests/fixtures/file2.yml tests/fixtures/file1.yaml --format=plain
-
-cmp-json-json-json:
-	./bin/gendiff tests/fixtures/file1.json tests/fixtures/file2.json --format=json
-
-cmp-json-yaml-yml:
-	./bin/gendiff tests/fixtures/file1.yaml tests/fixtures/file2.yml --format=json
-
 .PHONY: tests
