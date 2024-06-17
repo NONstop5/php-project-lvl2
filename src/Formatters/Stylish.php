@@ -114,7 +114,11 @@ function stringifyIter(mixed $value, int $depth): string
         $value
     );
 
-    return "{\n" . implode($result) . "{$closeBracketIndent}}";
+    return sprintf(
+        "{\n%s%s}",
+        implode($result),
+        $closeBracketIndent
+    );
 }
 
 function getCompareSymbol(string $compareText): string
