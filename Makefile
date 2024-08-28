@@ -9,12 +9,10 @@ dump:
 
 lint:
 	composer exec -v phpcs src bin tests
+	vendor/bin/phpstan analyse
 
 lint-fix:
 	composer exec -v phpcbf -- --standard=PSR12 --colors src bin tests
-
-phpstan:
-	vendor/bin/phpstan analyse
 
 test:
 	composer exec --verbose phpunit tests
