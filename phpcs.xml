@@ -9,5 +9,5 @@
     <arg name="parallel" value="100"/>
     <arg value="np"/>
 
-    <exclude-pattern>vendor/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
 </ruleset>
